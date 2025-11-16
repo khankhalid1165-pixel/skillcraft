@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillCraft Technology - Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .app-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .calculator {
+            padding: 30px;
+        }
+
+        .calculator-display {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 20px;
+            text-align: right;
+            font-size: 2rem;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            min-height: 80px;
+            word-wrap: break-word;
+            overflow: hidden;
+        }
+
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .calc-btn {
+            padding: 20px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 10px;
+            background-color: var(--light-color);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calc-btn:hover {
+            background-color: #d5dbdb;
+            transform: translateY(-3px);
+        }
+
+        .calc-btn.operator {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .calc-btn.operator:hover {
+            background-color: #2980b9;
+        }
+
+        .calc-btn.equals {
+            background-color: var(--accent-color);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .calc-btn.equals:hover {
+            background-color: #c0392b;
+        }
+
+        .calc-btn.clear {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .calc-btn.clear:hover {
+            background-color: #e67e22;
+        }
+
+        .keyboard-info {
+            margin-top: 20px;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: white;
+            opacity: 0.8;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid white;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .calculator-buttons {
+                gap: 10px;
+            }
+            
+            .calc-btn {
+                padding: 15px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .calculator {
+                padding: 20px;
+            }
+            
+            .calculator-display {
+                font-size: 1.5rem;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SkillCraft Technology</h1>
+            <p>Task 02: Calculator Web Application</p>
+        </header>
+
+        <div class="app-container">
+            <div class="calculator">
+                <div class="calculator-display" id="display">0</div>
+                <div class="calculator-buttons">
+                    <button class="calc-btn clear" data-action="clear">C</button>
+                    <button class="calc-btn clear" data-action="backspace">⌫</button>
+                    <button class="calc-btn operator" data-action="divide">/</button>
+                    <button class="calc-btn operator" data-action="multiply">×</button>
+                    
+                    <button class="calc-btn" data-number="7">7</button>
+                    <button class="calc-btn" data-number="8">8</button>
+                    <button class="calc-btn" data-number="9">9</button>
+                    <button class="calc-btn operator" data-action="subtract">-</button>
+                    
+                    <button class="calc-btn" data-number="4">4</button>
+                    <button class="calc-btn" data-number="5">5</button>
+                    <button class="calc-btn" data-number="6">6</button>
+                    <button class="calc-btn operator" data-action="add">+</button>
+                    
+                    <button class="calc-btn" data-number="1">1</button>
+                    <button class="calc-btn" data-number="2">2</button>
+                    <button class="calc-btn" data-number="3">3</button>
+                    <button class="calc-btn equals" data-action="calculate" rowspan="2">=</button>
+                    
+                    <button class="calc-btn" data-number="0">0</button>
+                    <button class="calc-btn" data-action="decimal">.</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="keyboard-info">
+            <p>Tip: You can also use your keyboard to operate the calculator</p>
+        </div>
+
+        <footer>
+            <p>SkillCraft Technology Internship - Task 02</p>
+            <a href="quiz.html" class="back-link">Go to Quiz Game</a>
+        </footer>
+    </div>
+
+    <script>
+        // Calculator functionality
+        const display = document.getElementById('display');
+        let currentInput = '0';
+        let previousInput = '';
+        let operation = null;
+        let resetScreen = false;
+
+        // Update display
+        function updateDisplay() {
+            display.textContent = currentInput;
+        }
+
+        // Append number
+        function appendNumber(number) {
+            if (currentInput === '0' || resetScreen) {
+                currentInput = number;
+                resetScreen = false;
+            } else {
+                currentInput += number;
+            }
+        }
+
+        // Add decimal
+        function addDecimal() {
+            if (resetScreen) {
+                currentInput = '0.';
+                resetScreen = false;
+                return;
+            }
+            
+            if (!currentInput.includes('.')) {
+                currentInput += '.';
+            }
+        }
+
+        // Handle operations
+        function handleOperation(nextOperation) {
+            if (previousInput !== '' && operation !== null) {
+                calculate();
+            }
+            
+            operation = nextOperation;
+            previousInput = currentInput;
+            resetScreen = true;
+        }
+
+        // Calculate result
+        function calculate() {
+            let result;
+            const prev = parseFloat(previousInput);
+            const current = parseFloat(currentInput);
+            
+            if (isNaN(prev) || isNaN(current)) return;
+            
+            switch (operation) {
+                case 'add':
+                    result = prev + current;
+                    break;
+                case 'subtract':
+                    result = prev - current;
+                    break;
+                case 'multiply':
+                    result = prev * current;
+                    break;
+                case 'divide':
+                    if (current === 0) {
+                        alert("Cannot divide by zero!");
+                        return;
+                    }
+                    result = prev / current;
+                    break;
+                default:
+                    return;
+            }
+            
+            currentInput = result.toString();
+            operation = null;
+            previousInput = '';
+            resetScreen = true;
+        }
+
+        // Clear calculator
+        function clearCalculator() {
+            currentInput = '0';
+            previousInput = '';
+            operation = null;
+        }
+
+        // Backspace function
+        function backspace() {
+            if (currentInput.length > 1) {
+                currentInput = currentInput.slice(0, -1);
+            } else {
+                currentInput = '0';
+            }
+        }
+
+        // Add event listeners to calculator buttons
+        document.querySelectorAll('.calc-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                if (button.dataset.number) {
+                    appendNumber(button.dataset.number);
+                    updateDisplay();
+                } else if (button.dataset.action) {
+                    const action = button.dataset.action;
+                    
+                    switch (action) {
+                        case 'clear':
+                            clearCalculator();
+                            break;
+                        case 'backspace':
+                            backspace();
+                            break;
+                        case 'decimal':
+                            addDecimal();
+                            break;
+                        case 'add':
+                        case 'subtract':
+                        case 'multiply':
+                        case 'divide':
+                            handleOperation(action);
+                            break;
+                        case 'calculate':
+                            calculate();
+                            break;
+                    }
+                    
+                    updateDisplay();
+                }
+            });
+        });
+
+        // Keyboard support for calculator
+        document.addEventListener('keydown', event => {
+            if (event.key >= '0' && event.key <= '9') {
+                appendNumber(event.key);
+                updateDisplay();
+            } else if (event.key === '.') {
+                addDecimal();
+                updateDisplay();
+            } else if (event.key === '+' || event.key === '-') {
+                handleOperation(event.key === '+' ? 'add' : 'subtract');
+                updateDisplay();
+            } else if (event.key === '*' || event.key === 'x') {
+                handleOperation('multiply');
+                updateDisplay();
+            } else if (event.key === '/') {
+                handleOperation('divide');
+                updateDisplay();
+            } else if (event.key === 'Enter' || event.key === '=') {
+                calculate();
+                updateDisplay();
+            } else if (event.key === 'Escape') {
+                clearCalculator();
+                updateDisplay();
+            } else if (event.key === 'Backspace') {
+                backspace();
+                updateDisplay();
+            }
+        });
+
+        // Initialize display
+        updateDisplay();
+    </script>
+</body>
+</html>
